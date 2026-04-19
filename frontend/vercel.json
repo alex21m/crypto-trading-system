@@ -12,11 +12,11 @@
     },
     {
       "source": "/webhook/(.*)",
-      "destination": "http://localhost:5001/webhook/$1"
+      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/webhook/$1"
     },
     {
       "source": "/socket.io/(.*)",
-      "destination": "http://localhost:5001/socket.io/$1"
+      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/socket.io/$1"
     },
     {
       "source": "/(.*)",
