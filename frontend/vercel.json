@@ -24,8 +24,8 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "http://localhost:5001",
-    "REACT_APP_SOCKET_URL": "http://localhost:5001"
+    "REACT_APP_API_URL": "https://shredding-mountain-shelf.ngrok-free.dev",
+    "REACT_APP_SOCKET_URL": "https://shredding-mountain-shelf.ngrok-free.dev"
   },
   "headers": [
     {
