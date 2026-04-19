@@ -249,4 +249,3 @@ npm start          # → http://localhost:3000 (proxies to :5000)
 ## License
 
 MIT — use at own risk. Crypto trading involves significant financial risk.
-# crypto-trading-system

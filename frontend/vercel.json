@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "name": "crypto-trading-frontend",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "create-react-app",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://YOUR_BACKEND_URL/api/$1" },
+    { "source": "/webhook/(.*)", "destination": "https://YOUR_BACKEND_URL/webhook/$1" },
+    { "source": "/socket.io/(.*)", "destination": "https://YOUR_BACKEND_URL/socket.io/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@backend_url",
+    "REACT_APP_SOCKET_URL": "@backend_socket_url"
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+      ]
+    }
+  ]
+}
