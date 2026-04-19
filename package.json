@@ -1,0 +1,7 @@
+{
+  "name": "crypto-trading-system",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && npm install --legacy-peer-deps && npm run build && cd .. && rm -rf build && cp -r frontend/build build"
+  }
+}
