@@ -6,10 +6,22 @@
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "create-react-app",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "http://localhost:5001/api/$1" },
-    { "source": "/webhook/(.*)", "destination": "http://localhost:5001/webhook/$1" },
-    { "source": "/socket.io/(.*)", "destination": "http://localhost:5001/socket.io/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/api/$1"
+    },
+    {
+      "source": "/webhook/(.*)",
+      "destination": "http://localhost:5001/webhook/$1"
+    },
+    {
+      "source": "/socket.io/(.*)",
+      "destination": "http://localhost:5001/socket.io/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "env": {
     "REACT_APP_API_URL": "http://localhost:5001",
@@ -19,9 +31,18 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
       ]
     }
   ]
