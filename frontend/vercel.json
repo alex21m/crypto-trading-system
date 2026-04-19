@@ -6,14 +6,14 @@
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "create-react-app",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://YOUR_BACKEND_URL/api/$1" },
-    { "source": "/webhook/(.*)", "destination": "https://YOUR_BACKEND_URL/webhook/$1" },
-    { "source": "/socket.io/(.*)", "destination": "https://YOUR_BACKEND_URL/socket.io/$1" },
+    { "source": "/api/(.*)", "destination": "http://localhost:5001/api/$1" },
+    { "source": "/webhook/(.*)", "destination": "http://localhost:5001/webhook/$1" },
+    { "source": "/socket.io/(.*)", "destination": "http://localhost:5001/socket.io/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
-    "REACT_APP_API_URL": "@backend_url",
-    "REACT_APP_SOCKET_URL": "@backend_socket_url"
+    "REACT_APP_API_URL": "http://localhost:5001",
+    "REACT_APP_SOCKET_URL": "http://localhost:5001"
   },
   "headers": [
     {
