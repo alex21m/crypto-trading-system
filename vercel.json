@@ -2,25 +2,21 @@
   "version": 2,
   "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm install ajv@^8 --legacy-peer-deps && npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "echo 'skip root install'",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node@3"
-    }
-  },
-  "routes": [
+  "installCommand": "npm install --prefix frontend --legacy-peer-deps",
+  "rewrites": [
     {
-      "src": "/api/binance/(.*)",
-      "dest": "/api/binance/$1"
+      "source": "/api/binance/:path*",
+      "destination": "/api/binance/:path*"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ],
+  "env": {
+    "REACT_APP_API_URL": "",
+    "REACT_APP_SOCKET_URL": ""
+  },
   "headers": [
     {
       "source": "/api/(.*)",
