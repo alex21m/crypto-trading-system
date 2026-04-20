@@ -5,20 +5,13 @@
   "outputDirectory": "frontend/build",
   "framework": null,
   "functions": {
-    "frontend/api/**/*.js": {
+    "api/**/*.js": {
       "runtime": "@vercel/node@3"
     }
   },
   "rewrites": [
-    { "source": "/api/binance/ticker", "destination": "/frontend/api/binance/ticker.js" },
-    { "source": "/api/binance/klines", "destination": "/frontend/api/binance/klines.js" },
-    { "source": "/api/binance/depth", "destination": "/frontend/api/binance/depth.js" },
-    { "source": "/api/binance/funding", "destination": "/frontend/api/binance/funding.js" },
-    { "source": "/api/binance/order", "destination": "/frontend/api/binance/order.js" },
-    { "source": "/api/binance/account", "destination": "/frontend/api/binance/account.js" },
-    { "source": "/api/binance/positions", "destination": "/frontend/api/binance/positions.js" },
-    { "source": "/api/binance/leverage", "destination": "/frontend/api/binance/leverage.js" },
-    { "source": "/(.*)", "destination": "/frontend/build/$1" }
+    { "source": "/api/binance/:path*", "destination": "/api/binance/:path*" },
+    { "source": "/(.*)", "destination": "/$1" }
   ],
   "headers": [
     {
