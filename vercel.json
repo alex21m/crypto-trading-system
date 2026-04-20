@@ -1,17 +1,25 @@
 {
   "version": 2,
-  "name": "crypto-trading-frontend",
   "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm install ajv@^8 --legacy-peer-deps && npm run build",
   "outputDirectory": "frontend/build",
-  "framework": null,
+  "installCommand": "echo 'skip root install'",
   "functions": {
     "api/**/*.js": {
       "runtime": "@vercel/node@3"
     }
   },
-  "rewrites": [
-    { "source": "/api/binance/:path*", "destination": "/api/binance/:path*" },
-    { "source": "/(.*)", "destination": "/$1" }
+  "routes": [
+    {
+      "src": "/api/binance/(.*)",
+      "dest": "/api/binance/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ],
   "headers": [
     {
