@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "framework": "create-react-app",
-  "buildCommand": "npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "build",
+  "outputDirectory": "frontend/build",
   "rewrites": [
     { "source": "/api/binance/:path*", "destination": "/api/binance/:path*" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
