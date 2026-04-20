@@ -1,18 +1,28 @@
 {
   "version": 2,
   "name": "crypto-trading-frontend",
+  "framework": "create-react-app",
   "buildCommand": "npm install --legacy-peer-deps && npm install ajv@^8 --legacy-peer-deps && npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
-  "framework": "create-react-app",
-  "rewrites": [
-    { "source": "/((?!api).*)", "destination": "/index.html" }
-  ],
-  "env": {
-    "REACT_APP_API_URL": "",
-    "REACT_APP_SOCKET_URL": ""
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3"
+    }
   },
+  "rewrites": [
+    { "source": "/api/binance/:path*", "destination": "/api/binance/:path*" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
   "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
