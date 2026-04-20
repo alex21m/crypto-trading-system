@@ -1,48 +1,24 @@
 {
   "version": 2,
   "name": "crypto-trading-frontend",
-  "buildCommand": "npm run build",
+  "buildCommand": "npm install --legacy-peer-deps && npm install ajv@^8 --legacy-peer-deps && npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "create-react-app",
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/api/$1"
-    },
-    {
-      "source": "/webhook/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/webhook/$1"
-    },
-    {
-      "source": "/socket.io/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/socket.io/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/((?!api).*)", "destination": "/index.html" }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://shredding-mountain-shelf.ngrok-free.dev",
-    "REACT_APP_SOCKET_URL": "https://shredding-mountain-shelf.ngrok-free.dev"
+    "REACT_APP_API_URL": "",
+    "REACT_APP_SOCKET_URL": ""
   },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
       ]
     }
   ]

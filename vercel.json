@@ -1,48 +1,40 @@
 {
   "version": 2,
   "name": "crypto-trading-frontend",
-  "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "installCommand": "npm install --legacy-peer-deps",
-  "framework": "create-react-app",
+  "buildCommand": "cd frontend && npm install --legacy-peer-deps && npm install ajv@^8 --legacy-peer-deps && npm run build",
+  "outputDirectory": "frontend/build",
+  "framework": null,
+  "functions": {
+    "frontend/api/**/*.js": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "rewrites": [
+    { "source": "/api/binance/ticker", "destination": "/frontend/api/binance/ticker.js" },
+    { "source": "/api/binance/klines", "destination": "/frontend/api/binance/klines.js" },
+    { "source": "/api/binance/depth", "destination": "/frontend/api/binance/depth.js" },
+    { "source": "/api/binance/funding", "destination": "/frontend/api/binance/funding.js" },
+    { "source": "/api/binance/order", "destination": "/frontend/api/binance/order.js" },
+    { "source": "/api/binance/account", "destination": "/frontend/api/binance/account.js" },
+    { "source": "/api/binance/positions", "destination": "/frontend/api/binance/positions.js" },
+    { "source": "/api/binance/leverage", "destination": "/frontend/api/binance/leverage.js" },
+    { "source": "/(.*)", "destination": "/frontend/build/$1" }
+  ],
+  "headers": [
     {
       "source": "/api/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/api/$1"
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
     },
-    {
-      "source": "/webhook/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/webhook/$1"
-    },
-    {
-      "source": "/socket.io/(.*)",
-      "destination": "https://shredding-mountain-shelf.ngrok-free.dev/socket.io/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "env": {
-    "REACT_APP_API_URL": "https://shredding-mountain-shelf.ngrok-free.dev",
-    "REACT_APP_SOCKET_URL": "https://shredding-mountain-shelf.ngrok-free.dev"
-  },
-  "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
       ]
     }
   ]

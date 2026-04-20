@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build
+frontend/build/
+build/
+
+# Environment (secrets)
+backend/.env
+
+# OS
+.DS_Store
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
