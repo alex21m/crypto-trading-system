@@ -4,9 +4,15 @@ Database connections: Redis (cache) + TimescaleDB (time-series storage)
 """
 
 import os
-import redis
-import psycopg2
-from psycopg2.extras import RealDictCursor
+try:
+    import redis
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+except ImportError:
+    # These dependencies are managed by Docker container in production
+    redis = None
+    psycopg2 = None
+    RealDictCursor = None
 
 _redis_client = None
 _pg_conn = None
