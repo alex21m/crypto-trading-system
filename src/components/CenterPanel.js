@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../store';
-import { marketAPI, botAPI } from '../api';
+import { botAPI } from '../api';
 import {
   Chart as ChartJS,
   CategoryScale,

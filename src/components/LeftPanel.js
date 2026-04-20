@@ -1,25 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useStore } from '../store';
-import { marketAPI } from '../api';
 
 export default function LeftPanel() {
   const markets = useStore((s) => s.markets);
   const selectedPair = useStore((s) => s.selectedPair);
-  const [gainers, setGainers] = useState([]);
-
-  useEffect(() => {
-    const loadGainers = async () => {
-      try {
-        const res = await marketAPI.getGainers();
-        setGainers(res.data);
-      } catch (e) {
-        console.error('[LeftPanel] Gainers error:', e);
-      }
-    };
-    loadGainers();
-    const interval = setInterval(loadGainers, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   const pairs = Object.values(markets).slice(0, 8);
 

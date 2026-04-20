@@ -37,7 +37,7 @@ export default function TopBar() {
       borderBottom: '1px solid #1a2535'
     }}>
       <div className="logo" style={{fontSize: '14px', fontWeight: 700}}>
-        GODVIEW <span style={{color: '#3d5570', fontSize: '10px'}}>// PHASE 3 · TRADING BOT</span>
+        GODVIEW <span style={{color: '#3d5570', fontSize: '10px'}}>PHASE 3 · TRADING BOT</span>
       </div>
       <div className="tb-stats" style={{display: 'flex', gap: '20px', fontSize: '11px'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
