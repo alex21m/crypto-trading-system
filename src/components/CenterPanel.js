@@ -33,14 +33,16 @@ export default function CenterPanel() {
     const loadData = async () => {
       try {
         if (tab === 'candle') {
-          // Mocking data if API is not yet supplying full candle history
-          setKlines([
-            {t: Date.now() - 300000, c: 45000},
-            {t: Date.now() - 240000, c: 45200},
-            {t: Date.now() - 180000, c: 45600},
-            {t: Date.now() - 120000, c: 45400},
-            {t: Date.now() - 60000, c: 45800},
-          ]);
+          // Fetch real price point from our proxy
+          const res = await fetch(`https://crypto-trading-system-ten.vercel.app/api/binance/price?symbol=${selectedPair}`);
+          const pdata = await res.json();
+          if (pdata.price) {
+            setKlines(prev => {
+              const newPoint = { t: Date.now(), c: parseFloat(pdata.price) };
+              const next = [...prev, newPoint].slice(-20); // Keep last 20 points
+              return next;
+            });
+          }
         } else if (tab === 'bottrades') {
           const res = await botAPI.getTrades();
           setTrades(res.data || []);
@@ -50,7 +52,7 @@ export default function CenterPanel() {
       }
     };
     loadData();
-    const interval = setInterval(loadData, 5000);
+    const interval = setInterval(loadData, 3000);
     return () => clearInterval(interval);
   }, [tab, selectedPair]);
 
