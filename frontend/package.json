@@ -6,16 +6,17 @@
     "node": "18.x"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
+    "ajv": "^8.20.0",
     "axios": "^1.7.2",
-    "socket.io-client": "^4.7.5",
     "chart.js": "^4.4.3",
-    "react-chartjs-2": "^5.2.0",
     "lightweight-charts": "^4.2.0",
-    "zustand": "^4.5.4",
-    "react-hot-toast": "^2.4.1"
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-scripts": "5.0.1",
+    "socket.io-client": "^4.7.5",
+    "zustand": "^4.5.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,11 +25,21 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app"]
+    "extends": [
+      "react-app"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "proxy": "http://localhost:5000"
 }

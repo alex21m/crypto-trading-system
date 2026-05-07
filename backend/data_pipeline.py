@@ -31,7 +31,19 @@ CACHE_TTL = 5  # seconds
 
 
 class DataPipeline:
+    _instance = None
+    _lock = threading.Lock()
+
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super(DataPipeline, cls).__new__(cls)
+                cls._instance._initialized = False
+            return cls._instance
+
     def __init__(self):
+        if getattr(self, "_initialized", False):
+            return
         self.redis = db.get_redis()
         self._cache: dict = {}
         self._ws_thread: Optional[threading.Thread] = None
@@ -132,6 +144,7 @@ class DataPipeline:
 
         t = threading.Thread(target=run, daemon=True)
         t.start()
+        self._initialized = True
 
     # ── Public getters ─────────────────────────────────────────────────────────
     def get_latest(self) -> dict:

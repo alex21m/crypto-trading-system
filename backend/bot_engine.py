@@ -162,6 +162,31 @@ class BotEngine:
         elif strat == "macd":
             if macd > 20: direction = "LONG"
             elif macd < -20: direction = "SHORT"
+        elif strat == "bb":
+            # Bollinger Band breakout strategy using local price history
+            from data_pipeline import DataPipeline
+            pipeline = DataPipeline()
+            klines = pipeline.get_klines(data["symbol"], interval="5m", limit=20)
+            if len(klines) >= 20:
+                prices = [k["c"] for k in klines]
+                ma = sum(prices) / 20
+                variance = sum((p - ma) ** 2 for p in prices) / 20
+                std_dev = variance ** 0.5
+                upper = ma + 2 * std_dev
+                lower = ma - 2 * std_dev
+                if price > upper: direction = "SHORT"
+                elif price < lower: direction = "LONG"
+                confidence = 75
+        elif strat == "whale":
+            # Follow whale agent activity from simulation
+            from agents.simulation import MarketModel
+            mm = MarketModel()
+            states = mm.get_agent_states()
+            whale = next((a for a in states if a["role"] == "whale"), None)
+            if whale:
+                if whale["action"] == "ACCUMULATE": direction = "LONG"
+                elif whale["action"] == "DUMP": direction = "SHORT"
+                confidence = 85
         elif strat == "scalp":
             import random
             if random.random() > 0.65:
@@ -232,7 +257,7 @@ class BotEngine:
             return
         wr = self.wins / self.total_trades
         if wr < 0.40:
-            strats = ["ai","trend","scalp","mean","macd","bb"]
+            strats = ["ai","trend","scalp","mean","macd","bb","whale"]
             cur = self.config["strategy"]
             options = [s for s in strats if s != cur]
             import random
