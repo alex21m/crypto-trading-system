@@ -6,9 +6,8 @@ export default function LeftPanel() {
   const setSelectedPair = useStore((s) => s.setSelectedPair);
   const [prices, setPrices] = useState({});
 
-  const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'DOGEUSDT', 'XRPUSDT'];
-
   useEffect(() => {
+    const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'DOGEUSDT', 'XRPUSDT'];
     const fetchPrices = async () => {
       try {
         const res = await fetch('https://crypto-trading-system-ten.vercel.app/api/binance/ticker');
@@ -32,6 +31,8 @@ export default function LeftPanel() {
     const interval = setInterval(fetchPrices, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'DOGEUSDT', 'XRPUSDT'];
 
   return (
     <div className="col" style={{borderRight: '1px solid #1a2535', display: 'flex', flexDirection: 'column'}}>

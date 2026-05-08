@@ -54,6 +54,7 @@ class Predictor:
             return result
 
         def rsi(arr, n=14):
+            if len(arr) < n + 1: return 50.0
             deltas = np.diff(arr)
             gains = np.where(deltas > 0, deltas, 0)
             losses = np.where(deltas < 0, -deltas, 0)
@@ -64,28 +65,36 @@ class Predictor:
             rs = avg_gain / avg_loss
             return 100 - (100 / (1 + rs))
 
-        ema9  = ema(p, 9)[-1]
-        ema21 = ema(p, 21)[-1]
-        ema50 = ema(p, min(50, len(p)))[-1]
+        ema9   = ema(p, 9)[-1]
+        ema21  = ema(p, 21)[-1]
+        ema50  = ema(p, min(50, len(p)))[-1]
+        ema200 = ema(p, min(200, len(p)))[-1]
         rsi_val = rsi(p)
-        macd = ema(p, 12)[-1] - ema(p, 26)[-1] if len(p) >= 26 else 0
+        macd_line = ema(p, 12) - ema(p, 26) if len(p) >= 26 else np.zeros_like(p)
+        macd_signal = ema(macd_line, 9)[-1] if len(macd_line) >= 9 else 0
+        macd_val = macd_line[-1] if len(macd_line) > 0 else 0
+
         price_chg = (p[-1] - p[-5]) / p[-5] if len(p) >= 5 else 0
         vol_ratio = v[-1] / np.mean(v[-10:]) if len(v) >= 10 and np.mean(v[-10:]) > 0 else 1
+
         bb_mid = np.mean(p[-20:])
         bb_std = np.std(p[-20:])
         bb_pos = (p[-1] - bb_mid) / (2 * bb_std + 1e-9)
+
+        atr = np.mean(np.abs(np.diff(p[-14:]))) if len(p) >= 15 else 0
 
         return np.array([
             (p[-1] - ema9) / p[-1],
             (p[-1] - ema21) / p[-1],
             (p[-1] - ema50) / p[-1],
-            (ema9 - ema21) / p[-1],
+            (p[-1] - ema200) / p[-1],
             rsi_val / 100,
-            macd / p[-1],
+            macd_val / p[-1],
+            (macd_val - macd_signal) / p[-1],
             price_chg,
             vol_ratio,
             bb_pos,
-            np.std(p[-10:]) / p[-1],
+            atr / p[-1],
         ], dtype=float)
 
     # ── Public predict interface ──────────────────────────────────────────────
@@ -117,20 +126,31 @@ class Predictor:
 
         if feats is not None and SKLEARN_AVAILABLE:
             # Heuristic scoring from features (no trained model checkpoint yet)
-            ema_cross   = feats[3]   # ema9 vs ema21
-            rsi_norm    = feats[4]   # 0-1
-            macd_norm   = feats[5]
-            price_chg   = feats[6]
-            vol_ratio   = feats[7]
-            bb_pos      = feats[8]
+            ema9_dist    = feats[0]
+            ema200_dist  = feats[3]
+            rsi_norm     = feats[4]   # 0-1
+            macd_norm    = feats[5]
+            macd_hist    = feats[6]
+            price_chg    = feats[7]
+            vol_ratio    = feats[8]
+            bb_pos       = feats[9]
 
             long_score  = sum([
-                ema_cross > 0.001, rsi_norm < 0.40, macd_norm > 0.001,
-                price_chg > 0.005, vol_ratio > 1.3, bb_pos < -0.5,
+                ema9_dist > 0,          # Price above EMA9
+                ema200_dist > 0,        # Bullish long-term trend
+                rsi_norm < 0.35,        # Oversold
+                macd_hist > 0,          # MACD histogram positive
+                price_chg > 0.01,       # Strong momentum
+                vol_ratio > 1.5,        # Volume confirmation
+                bb_pos < -0.8,          # Near lower Bollinger Band
             ])
             short_score = sum([
-                ema_cross < -0.001, rsi_norm > 0.65, macd_norm < -0.001,
-                price_chg < -0.005, bb_pos > 0.5,
+                ema9_dist < 0,          # Price below EMA9
+                ema200_dist < 0,        # Bearish long-term trend
+                rsi_norm > 0.65,        # Overbought
+                macd_hist < 0,          # MACD histogram negative
+                price_chg < -0.01,      # Weak momentum
+                bb_pos > 0.8,           # Near upper Bollinger Band
             ])
             total = long_score + short_score or 1
             if long_score > short_score:

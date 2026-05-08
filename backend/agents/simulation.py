@@ -92,7 +92,19 @@ AGENT_CONFIG = [
 
 
 class MarketModel:
+    _instance = None
+    _lock = threading.Lock()
+
+    def __new__(cls, pipeline=None):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super(MarketModel, cls).__new__(cls)
+                cls._instance._initialized = False
+            return cls._instance
+
     def __init__(self, pipeline=None):
+        if self._initialized:
+            return
         self.pipeline = pipeline
         self.agents = [
             TradingAgent(i, cfg["role"], cfg["color"])
@@ -104,9 +116,12 @@ class MarketModel:
         self._sig_count = 0
 
     def start(self):
+        if self._running:
+            return
         self._running = True
         self._thread = threading.Thread(target=self._loop, daemon=True)
         self._thread.start()
+        self._initialized = True
 
     def _loop(self):
         while self._running:
